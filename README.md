@@ -9,7 +9,6 @@ Using Pykd-Ext - is recommended way to use pykd with windbg.
 
 [//]: #  ([PYKD_BOOTSTRAPPER_2.0.0.15.zip](/uploads/a47da1afffc6f74dc089188841f60df2/PYKD_BOOTSTRAPPER_2.0.0.15.zip))
 
-[PYKD_BOOTSTRAPPER_2.0.0.16.zip](/uploads/f24e6c41ed38c5ea4bd8804b8e69373b/PYKD_BOOTSTRAPPER_2.0.0.16.zip)
 [pykd_ext_2.0.0.17.zip](/uploads/d1c6d7657df56861a7b92565c5d9953f/pykd_ext_2.0.0.17.zip)
 
 #### Installation pykd.dll
