@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1809804-6329-494A-94AA-76A090F15973}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pykd_ext_2.0", "sources\pykd_ext.vcxproj", "{583F9A6C-AF6D-45E0-A8F4-290D93611185}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Debug|x64.ActiveCfg = Debug|x64
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Debug|x64.Build.0 = Debug|x64
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Debug|x86.ActiveCfg = Debug|Win32
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Debug|x86.Build.0 = Debug|Win32
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Release|x64.ActiveCfg = Release|x64
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Release|x64.Build.0 = Release|x64
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Release|x86.ActiveCfg = Release|Win32
+		{583F9A6C-AF6D-45E0-A8F4-290D93611185}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB208C6D-5FA8-45D3-B3DB-F800AC8AE104}
+	EndGlobalSection
+EndGlobal
