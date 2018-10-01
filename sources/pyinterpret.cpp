@@ -66,7 +66,7 @@ public:
     PyObject* PyUnicode_Type;
     PyObject* PyString_Type;
 
-    PyThreadState*  PyThreadState_Current;
+    PyThreadState**  PyThreadState_Current;
 
     void( *Py_Initialize)();
     void( *Py_Finalize)();
@@ -133,6 +133,7 @@ public:
     PyObject* ( *PyDescr_NewMethod)(PyObject* type, struct PyMethodDef *meth);
     size_t (*PyGC_Collect)(void);
     void(*PyImport_Cleanup)(void);
+    int(*PyGILState_Check)(void);
 
     HMODULE  m_handlePython;
     PyThreadState*  m_globalState;
@@ -185,7 +186,12 @@ public:
 
         for ( auto mod : m_modules)
         {
-            if ( mod.second->PyThreadState_Current != 0 )
+            if ( !mod.second->isPy3 && *mod.second->PyThreadState_Current != 0 )
+            {
+                return mod.second->m_globalInterpreter;
+            }
+            else
+            if (mod.second->isPy3 && mod.second->PyGILState_Check() != 0)
             {
                 return mod.second->m_globalInterpreter;
             }
@@ -413,7 +419,7 @@ PyModule::PyModule(int majorVesion, int minorVersion)
     *reinterpret_cast<FARPROC*>(&Py_None) = GetProcAddress(m_handlePython, "_Py_NoneStruct");
     PyExc_SystemExit = *reinterpret_cast<PyObject**>(GetProcAddress(m_handlePython, "PyExc_SystemExit"));
     PyExc_TypeError= *reinterpret_cast<PyObject**>(GetProcAddress(m_handlePython, "PyExc_TypeError"));
-    PyThreadState_Current = reinterpret_cast<PyThreadState*>(GetProcAddress(m_handlePython, "_PyThreadState_Current"));
+    PyThreadState_Current = reinterpret_cast<PyThreadState**>(GetProcAddress(m_handlePython, "_PyThreadState_Current"));
     *reinterpret_cast<FARPROC*>(&Py_Initialize) = GetProcAddress(m_handlePython, "Py_Initialize");
     *reinterpret_cast<FARPROC*>(&Py_Finalize) = GetProcAddress(m_handlePython, "Py_Finalize");
     *reinterpret_cast<FARPROC*>(&Py_NewInterpreter) = GetProcAddress(m_handlePython, "Py_NewInterpreter");
@@ -483,6 +489,8 @@ PyModule::PyModule(int majorVesion, int minorVersion)
     *reinterpret_cast<FARPROC*>(&PyGILState_Release) = GetProcAddress(m_handlePython, "PyGILState_Release");
     *reinterpret_cast<FARPROC*>(&PyDescr_NewMethod) = GetProcAddress(m_handlePython, "PyDescr_NewMethod");
     *reinterpret_cast<FARPROC*>(&PyGC_Collect) = GetProcAddress(m_handlePython, "PyGC_Collect");
+
+    *reinterpret_cast<FARPROC*>(&PyGILState_Check) = isPy3 ? GetProcAddress(m_handlePython, "PyGILState_Check") : 0;
 
    
     Py_Initialize();
