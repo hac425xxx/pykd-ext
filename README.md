@@ -5,7 +5,7 @@ Pykd-Ext is not Pykd. Pykd-Ext is a windbg extension that runs python that runs 
 Using Pykd-Ext - is recommended way to use pykd with windbg. 
 
 #### Download
-[pykd_ext_2.0.0.18.zip](/uploads/6492e3cdaa91dc09ce77491ed8613bb2/pykd_ext_2.0.0.18.zip)
+[pykd_ext_2.0.0.18.zip](uploads/8ce85e873bcaf3e35faaeea3691704b8/pykd_ext_2.0.0.18.zip)
 
 #### Installation pykd.dll
 1. Locate your windbg installation place ( for example: C:\Program Files (x86)\Windows Kits\10\Debuggers\x64 )
