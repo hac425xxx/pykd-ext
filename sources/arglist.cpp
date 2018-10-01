@@ -38,19 +38,16 @@ Options::Options(const std::string& cmdline) :
     showHelp(false),
     runModule(false)
 {
-
     args = getArgsList( cmdline );
 
-    if ( args.empty() )
-    {
-        global = true;
-    }
+    bool  globalByDefault = true;
 
     for (auto it = args.begin(); it != args.end();)
     {
         if (*it == "--global" || *it == "-g")
         {
             global = true;
+            globalByDefault = false;
             it = args.erase(it);
             continue;
         }
@@ -58,20 +55,7 @@ Options::Options(const std::string& cmdline) :
         if (*it == "--local" || *it == "-l")
         {
             global = false;
-            it = args.erase(it);
-            continue;
-        }
-
-        if (*it == "--help" || *it == "-h")
-        {
-            showHelp = true;
-            it = args.erase(it);
-            continue;
-        }
-
-        if (*it == "--module" || *it == "-m")
-        {
-            runModule = true;
+            globalByDefault = false;
             it = args.erase(it);
             continue;
         }
@@ -93,6 +77,30 @@ Options::Options(const std::string& cmdline) :
         break;
     }
 
+    if ( args.empty() && globalByDefault)
+    {
+        global = true;
+    }
+
+    for (auto it = args.begin(); it != args.end();)
+    {
+
+        if (*it == "--help" || *it == "-h")
+        {
+            showHelp = true;
+            it = args.erase(it);
+            continue;
+        }
+
+        if (*it == "--module" || *it == "-m")
+        {
+            runModule = true;
+            it = args.erase(it);
+            continue;
+        }
+
+        break;
+    }
 }
 
 
