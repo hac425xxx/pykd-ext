@@ -513,17 +513,46 @@ pip(
         PyObjectRef  mainMod = PyImport_Import(mainName);
         PyObjectRef  globals = PyObject_GetAttrString(mainMod, "__dict__");
 
+        if (IsPy3())
+        {
+            std::vector<std::wstring>   argws(opts.args.size() + 1);
 
-        std::stringstream  sstr;
-        sstr << "pip.main([";
-        for (auto arg : opts.args)
-            sstr << '\'' << arg << '\'' << ',';
-        sstr << "])\n";
+            argws[0] = L"pip";
+            
+            for (size_t i = 0; i < opts.args.size(); ++i)
+                argws[i+1] = _bstr_t(opts.args[i].c_str());
 
-        PyObjectRef result;
-        result = PyRun_String("import pip\n", Py_file_input, globals, globals);
-        result = PyRun_String("pip.logger.consumers = []\n", Py_file_input, globals, globals);
-        result = PyRun_String(sstr.str().c_str(), Py_file_input, globals, globals);
+            std::vector<wchar_t*>  pythonArgs(argws.size());
+            for (size_t i = 0; i < argws.size(); ++i)
+                pythonArgs[i] = const_cast<wchar_t*>(argws[i].c_str());
+
+            PySys_SetArgv_Py3((int)argws.size(), &pythonArgs[0]);
+
+            std::stringstream sstr;
+            sstr << "runpy.run_module('pip', run_name='__main__',  alter_sys=True)" << std::endl;
+
+            PyObjectRef result;
+            result = PyRun_String("import runpy\n", Py_file_input, globals, globals);
+            result = PyRun_String(sstr.str().c_str(), Py_file_input, globals, globals);
+        }
+        else
+        {
+            std::vector<char*>  pythonArgs(opts.args.size() + 1);
+
+            pythonArgs[0] = "pip";
+
+            for (size_t i = 0; i < opts.args.size(); ++i)
+                pythonArgs[i+1] = const_cast<char*>(opts.args[i].c_str());
+
+            PySys_SetArgv((int)pythonArgs.size(), &pythonArgs[0]);
+
+            std::stringstream sstr;
+            sstr << "runpy.run_module('pip', run_name='__main__', alter_sys=True)" << std::endl;
+
+            PyObjectRef result;
+            result = PyRun_String("import runpy\n", Py_file_input, globals, globals);
+            result = PyRun_String(sstr.str().c_str(), Py_file_input, globals, globals);
+        }
 
         handleException();
     }
