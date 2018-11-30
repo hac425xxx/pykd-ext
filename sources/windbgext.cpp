@@ -201,17 +201,25 @@ selectVersion(
     PCSTR args
 )
 {
-    Options  opts(args);
-
-    int  majorVersion = opts.pyMajorVersion;
-    int  minorVersion = opts.pyMinorVersion;
-
-    getPythonVersion(majorVersion, minorVersion);
-
-    if ( opts.pyMajorVersion == majorVersion && opts.pyMinorVersion == minorVersion )
+    try
     {
-        defaultMajorVersion = majorVersion;
-        defaultMinorVersion = minorVersion;
+        Options  opts(args);
+
+        int  majorVersion = opts.pyMajorVersion;
+        int  minorVersion = opts.pyMinorVersion;
+
+        getPythonVersion(majorVersion, minorVersion);
+
+        if ( opts.pyMajorVersion == majorVersion && opts.pyMinorVersion == minorVersion )
+        {
+            defaultMajorVersion = majorVersion;
+            defaultMinorVersion = minorVersion;
+        }
+
+    }
+    catch (std::exception &e)
+    {
+        printString(client, DEBUG_OUTPUT_ERROR, e.what());
     }
 
     return S_OK;
