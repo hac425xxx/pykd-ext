@@ -31,9 +31,19 @@ struct convert_from_python
             return std::wstring(&buf[0], len);
         }
 
-        if ( !IsPy3() && PyString_Check(m_obj) )
+        if (!IsPy3() )
         {
-            return std::wstring(_bstr_t(PyString_AsString(m_obj)));
+            if (PyString_Check(m_obj))
+            {
+                return std::wstring(_bstr_t(PyString_AsString(m_obj)));
+            }
+        }
+        else
+        {
+            if (PyBytes_Check(m_obj))
+            {
+                return std::wstring(_bstr_t(PyBytes_AsString(m_obj)));
+            }
         }
 
         throw convert_python_exception("failed convert argument");
@@ -51,9 +61,19 @@ struct convert_from_python
             return std::string(_bstr_t(str.c_str()));
         }
 
-        if ( !IsPy3() && PyString_Check(m_obj) )
+        if (!IsPy3())
         {
-            return std::string(PyString_AsString(m_obj));
+            if (PyString_Check(m_obj))
+            {
+                return std::string(PyString_AsString(m_obj));
+            }
+        }
+        else
+        {
+            if (PyBytes_Check(m_obj))
+            {
+                return std::string(PyBytes_AsString(m_obj));
+            }
         }
 
         throw convert_python_exception("failed convert argument");

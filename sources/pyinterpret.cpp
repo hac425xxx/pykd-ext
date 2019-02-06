@@ -65,6 +65,7 @@ public:
     PyObject* PyExc_TypeError;
     PyObject* PyUnicode_Type;
     PyObject* PyString_Type;
+    PyObject* PyBytes_Type;
 
     PyThreadState**  PyThreadState_Current;
 
@@ -105,6 +106,7 @@ public:
     void( *PySys_SetArgv_Py3)(int argc, wchar_t **argv);
     PyObject* ( *PyString_FromString)(const char *v);
     char* ( *PyString_AsString)(PyObject *string);
+    char* ( *PyBytes_AsString)(PyObject *bytes);
     void( *PyErr_Fetch)(PyObject **ptype, PyObject **pvalue, PyObject **ptraceback);
     void( *PyErr_NormalizeException)(PyObject**exc, PyObject**val, PyObject**tb);
     void( *PyErr_SetString)(PyObject *type, const char *message);
@@ -416,6 +418,8 @@ PyModule::PyModule(int majorVesion, int minorVersion)
     *reinterpret_cast<FARPROC*>(&PyProperty_Type) = GetProcAddress(m_handlePython, "PyProperty_Type");
     *reinterpret_cast<FARPROC*>(&PyUnicode_Type) = GetProcAddress(m_handlePython, "PyUnicode_Type");
     *reinterpret_cast<FARPROC*>(&PyString_Type) = GetProcAddress(m_handlePython, "PyString_Type");
+    *reinterpret_cast<FARPROC*>(&PyBytes_Type) = isPy3 ? GetProcAddress(m_handlePython, "PyBytes_Type") : 0;
+
     *reinterpret_cast<FARPROC*>(&Py_None) = GetProcAddress(m_handlePython, "_Py_NoneStruct");
     PyExc_SystemExit = *reinterpret_cast<PyObject**>(GetProcAddress(m_handlePython, "PyExc_SystemExit"));
     PyExc_TypeError= *reinterpret_cast<PyObject**>(GetProcAddress(m_handlePython, "PyExc_TypeError"));
@@ -456,6 +460,7 @@ PyModule::PyModule(int majorVesion, int minorVersion)
     *reinterpret_cast<FARPROC*>(&PySys_SetArgv_Py3) = isPy3 ? GetProcAddress(m_handlePython, "PySys_SetArgv") : 0;
     *reinterpret_cast<FARPROC*>(&PyString_FromString) = GetProcAddress(m_handlePython, "PyString_FromString");
     *reinterpret_cast<FARPROC*>(&PyString_AsString) = GetProcAddress(m_handlePython, "PyString_AsString");
+    *reinterpret_cast<FARPROC*>(&PyBytes_AsString) = isPy3 ? GetProcAddress(m_handlePython, "PyBytes_AsString") : 0;
     *reinterpret_cast<FARPROC*>(&PyErr_Fetch) = GetProcAddress(m_handlePython, "PyErr_Fetch");
     *reinterpret_cast<FARPROC*>(&PyErr_NormalizeException) = GetProcAddress(m_handlePython, "PyErr_NormalizeException");
     *reinterpret_cast<FARPROC*>(&PyErr_SetString) = GetProcAddress(m_handlePython, "PyErr_SetString");
@@ -754,6 +759,11 @@ char* PyString_AsString(PyObject *string)
     return PythonSingleton::get()->currentInterpreter()->m_module->PyString_AsString(string);
 }
 
+char* PyBytes_AsString(PyObject *bytes)
+{
+    return PythonSingleton::get()->currentInterpreter()->m_module->PyBytes_AsString(bytes);
+}
+
 PyObject* PyUnicode_FromWideChar(const wchar_t *w, size_t size)
 {
     return PythonSingleton::get()->currentInterpreter()->m_module->PyUnicode_FromWideChar(w, size);
@@ -920,5 +930,11 @@ int PyUnicode_Check(PyObject *o)
 {
     return PythonSingleton::get()->currentInterpreter()->m_module->PyObject_IsInstance(o,
         PythonSingleton::get()->currentInterpreter()->m_module->PyUnicode_Type );
+}
+
+int PyBytes_Check(PyObject *o)
+{
+return PythonSingleton::get()->currentInterpreter()->m_module->PyObject_IsInstance(o,
+    PythonSingleton::get()->currentInterpreter()->m_module->PyBytes_Type);
 }
 

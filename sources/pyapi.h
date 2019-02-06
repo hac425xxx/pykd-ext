@@ -31,6 +31,9 @@ PyObject* __stdcall PyString_FromString(const char *v);
 char* PyString_AsString(PyObject *string);
 int PyString_Check(PyObject *o);
 
+int __stdcall PyBytes_Check(PyObject *bytes);
+char* PyBytes_AsString(PyObject *bytes);
+
 PyObject* PyImport_Import(PyObject *name);
 PyObject* __stdcall PyImport_ImportModule(const char *name);
 PyObject* __stdcall PyImport_AddModule(const char *name);
