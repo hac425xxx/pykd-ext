@@ -24,48 +24,48 @@ struct PyMethodDef {
 
 typedef struct PyMethodDef PyMethodDef;
 
-void __stdcall Py_IncRef(PyObject* object);
-void __stdcall Py_DecRef(PyObject* object);
+void Py_IncRef(PyObject* object);
+void Py_DecRef(PyObject* object);
 
-PyObject* __stdcall PyString_FromString(const char *v);
+PyObject* PyString_FromString(const char *v);
 char* PyString_AsString(PyObject *string);
 int PyString_Check(PyObject *o);
 
-int __stdcall PyBytes_Check(PyObject *bytes);
+int PyBytes_Check(PyObject *bytes);
 char* PyBytes_AsString(PyObject *bytes);
 
 PyObject* PyImport_Import(PyObject *name);
-PyObject* __stdcall PyImport_ImportModule(const char *name);
-PyObject* __stdcall PyImport_AddModule(const char *name);
+PyObject* PyImport_ImportModule(const char *name);
+PyObject* PyImport_AddModule(const char *name);
 
-PyObject* __stdcall  PyDict_New();
-int __stdcall PyDict_SetItemString(PyObject *p, const char *key, PyObject *val);
+PyObject* PyDict_New();
+int PyDict_SetItemString(PyObject *p, const char *key, PyObject *val);
 
-PyObject* __stdcall PyTuple_New(size_t len);
-PyObject* __stdcall PyTuple_GetItem(PyObject *p, size_t pos);
-int __stdcall PyTuple_SetItem(PyObject *p, size_t pos, PyObject *obj);
-PyObject* __stdcall PyDict_GetItemString(PyObject *p, const char *key);
-void __stdcall PyDict_Clear(PyObject *p);
-size_t __stdcall PyTuple_Size(PyObject *p);
+PyObject* PyTuple_New(size_t len);
+PyObject* PyTuple_GetItem(PyObject *p, size_t pos);
+int PyTuple_SetItem(PyObject *p, size_t pos, PyObject *obj);
+PyObject* PyDict_GetItemString(PyObject *p, const char *key);
+void PyDict_Clear(PyObject *p);
+size_t PyTuple_Size(PyObject *p);
 
 size_t PyList_Size(PyObject* list);
 PyObject* PyList_GetItem(PyObject *list, size_t index);
 
-PyObject* __stdcall PyCFunction_NewEx(PyMethodDef *, PyObject *, PyObject *);
-PyObject* __stdcall PyClass_New(PyObject* className, PyObject* classBases, PyObject* classDict);
-PyObject* __stdcall PyMethod_New(PyObject *func, PyObject *self, PyObject *classobj);
-PyObject* __stdcall PyInstance_New(PyObject *classobj, PyObject *arg, PyObject *kw);
+PyObject* PyCFunction_NewEx(PyMethodDef *, PyObject *, PyObject *);
+PyObject* PyClass_New(PyObject* className, PyObject* classBases, PyObject* classDict);
+PyObject* PyMethod_New(PyObject *func, PyObject *self, PyObject *classobj);
+PyObject* PyInstance_New(PyObject *classobj, PyObject *arg, PyObject *kw);
 
-PyThreadState* __stdcall PyEval_SaveThread();
-void __stdcall PyEval_RestoreThread(PyThreadState *tstate);
+PyThreadState* PyEval_SaveThread();
+void PyEval_RestoreThread(PyThreadState *tstate);
 
-int __stdcall PySys_SetObject(char *name, PyObject *v);
-PyObject* __stdcall PySys_GetObject(char *name);
-void __stdcall PySys_SetArgv(int argc, char **argv);
-void __stdcall PySys_SetArgv_Py3(int argc, wchar_t **argv);
+int PySys_SetObject(char *name, PyObject *v);
+PyObject* PySys_GetObject(char *name);
+void PySys_SetArgv(int argc, char **argv);
+void PySys_SetArgv_Py3(int argc, wchar_t **argv);
 
-int __stdcall PyRun_SimpleString(const char* str);
-PyObject* __stdcall PyRun_String(const char *str, int start, PyObject *globals, PyObject *locals);
+int PyRun_SimpleString(const char* str);
+PyObject* PyRun_String(const char *str, int start, PyObject *globals, PyObject *locals);
 PyObject* PyRun_File(FILE *fp, const char *filename, int start, PyObject *globals, PyObject *locals);
 
 typedef void(*PyCapsule_Destructor)(PyObject *);
@@ -97,17 +97,17 @@ PyObject* PyFile_FromString(char *filename, char *mode);
 FILE* PyFile_AsFile(PyObject *pyfile);
 FILE* _Py_fopen(const char* filename, const char* mode);
 
-PyObject* __stdcall PyUnicode_FromString(const char*  str);
-PyObject* __stdcall PyInstanceMethod_New(PyObject *func);
-size_t __stdcall PyUnicode_AsWideChar(PyObject *unicode, wchar_t *w, size_t size);
-int __stdcall Py_AddPendingCall(int(*func)(void *), void *arg);
+PyObject* PyUnicode_FromString(const char*  str);
+PyObject* PyInstanceMethod_New(PyObject *func);
+size_t PyUnicode_AsWideChar(PyObject *unicode, wchar_t *w, size_t size);
+int Py_AddPendingCall(int(*func)(void *), void *arg);
 
-PyGILState_STATE __stdcall PyGILState_Ensure();
-void __stdcall PyGILState_Release(PyGILState_STATE);
+PyGILState_STATE PyGILState_Ensure();
+void PyGILState_Release(PyGILState_STATE);
 
-PyObject* __stdcall PyDescr_NewMethod(PyObject* type, struct PyMethodDef *meth);
+PyObject* PyDescr_NewMethod(PyObject* type, struct PyMethodDef *meth);
 
-size_t __stdcall PyGC_Collect(void);
+size_t PyGC_Collect(void);
 
 bool IsPy3();
 

@@ -317,7 +317,6 @@ py(
 
     ULONG   oldMask;
     client->GetOutputMask(&oldMask);
-    //client->SetOutputMask(DEBUG_OUTPUT_NORMAL|DEBUG_OUTPUT_ERROR|DEBUG_OUTPUT_WARNING|DEBUG_OUTPUT_DEBUGGEE );
 
     try {
 
