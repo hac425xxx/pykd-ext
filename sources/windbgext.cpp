@@ -306,6 +306,10 @@ static const std::regex  shebangRe("^#!\\s*python([2,3])(?:\\.(\\d))?$");
 
 static volatile long recursiveGuard = 0L;
 
+#ifndef DEBUG_OUTPUT_STATUS
+#define DEBUG_OUTPUT_STATUS            0x00000400
+#endif
+
 extern "C"
 HRESULT
 CALLBACK
@@ -314,9 +318,9 @@ py(
     PCSTR args
 )
 {
-
     ULONG   oldMask;
     client->GetOutputMask(&oldMask);
+    client->SetOutputMask( (oldMask & ~DEBUG_OUTPUT_PROMPT) | DEBUG_OUTPUT_STATUS);
 
     try {
 
@@ -394,7 +398,6 @@ py(
             {
                 std::wstring  scriptFileNameW = _bstr_t(scriptFileName.c_str());
 
-                // устанавиливаем питоновские аргументы
                 std::vector<std::wstring>   argws(opts.args.size());
 
                 if ( !scriptFileNameW.empty() )
