@@ -18,8 +18,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-static int  defaultMajorVersion = 2;
-static int  defaultMinorVersion = 7;
+static int  defaultMajorVersion = 3;
+static int  defaultMinorVersion = 8;
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -736,7 +736,7 @@ void getDefaultPythonVersion(int& majorVersion, int& minorVersion)
 
     for (auto interpret : interpreterList)
     {
-        if (2 == interpret.majorVersion &&  minorVersion <= interpret.minorVersion )
+        if (3 == interpret.majorVersion &&  minorVersion <= interpret.minorVersion )
         {
             found = true;
             majorVersion = interpret.majorVersion;
@@ -749,7 +749,7 @@ void getDefaultPythonVersion(int& majorVersion, int& minorVersion)
 
     for (auto interpret : interpreterList)
     {
-        if (3 == interpret.majorVersion && minorVersion <= interpret.minorVersion )
+        if (2 == interpret.majorVersion && minorVersion <= interpret.minorVersion )
         {
             found = true;
             majorVersion = interpret.majorVersion;
