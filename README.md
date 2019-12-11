@@ -1,4 +1,4 @@
-# Pykd-Ext - bootstarpper to run any python with WinDBG
+# Pykd-Ext - bootstrapper to run any python with WinDBG
 
 Pykd-Ext is not Pykd. Pykd-Ext is a windbg extension that runs python that runs pykd. With Pykd-Ext you can choose and run any version of python. 
 
