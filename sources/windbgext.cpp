@@ -661,32 +661,22 @@ std::string getScriptFileName(const std::string &scriptName)
 {
     char*  ext = NULL;
 
-    DWORD searchResult = 
-        SearchPathA(
-            NULL,
-            scriptName.c_str(),
-            NULL,
-            0,
-            NULL,
-            NULL );
+    if (scriptName.length() <= 3 || scriptName.find_last_of(".py") != scriptName.length() - 3 )
+    {
+        ext = ".py";
+    }
+
+    DWORD searchResult = SearchPathA(
+        NULL,
+        scriptName.c_str(),
+        ext,
+        0,
+        NULL,
+        NULL);
 
     if ( searchResult == 0 )
     {
-        ext = ".py";
-
-        searchResult = 
-            SearchPathA(
-                NULL,
-                scriptName.c_str(),
-                ext,
-                0,
-                NULL,
-                NULL );
-
-        if ( searchResult == 0 )
-        {
             return "";
-        }
     }
 
     std::vector<char>  pathBuffer(searchResult);
