@@ -580,8 +580,7 @@ pip(
 
 void handleException()
 {
-    // ошибка в скрипте
-    PyObject  *errtype = NULL, *errvalue = NULL, *traceback = NULL;
+    PyObjectRef  errtype, errvalue, traceback;
 
     PyErr_Fetch(&errtype, &errvalue, &traceback);
 
@@ -596,9 +595,9 @@ void handleException()
         PyObjectRef  format_exception = PyObject_GetAttrString(traceback_module, "format_exception");
 
         PyObjectRef  args = PyTuple_New(3);
-        PyTuple_SetItem(args, 0, errtype ? errtype : Py_None());
-        PyTuple_SetItem(args, 1, errvalue ? errvalue : Py_None());
-        PyTuple_SetItem(args, 2, traceback ? traceback : Py_None());
+        PyTuple_SetItem(args, 0, errtype ? static_cast<PyObject*>(errtype) : Py_None());
+        PyTuple_SetItem(args, 1, errvalue ? static_cast<PyObject*>(errvalue) : Py_None());
+        PyTuple_SetItem(args, 2, traceback ? static_cast<PyObject*>(traceback) : Py_None());
 
         PyObjectRef  lst = PyObject_Call(format_exception, args, NULL);
 
@@ -612,10 +611,6 @@ void handleException()
 
         throw std::exception(sstr.str().c_str());
     }
-
-    if (errtype) Py_DecRef(errtype);
-    if (errvalue) Py_DecRef(errvalue);
-    if (traceback) Py_DecRef(traceback);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -786,6 +781,10 @@ void printString(PDEBUG_CLIENT client, ULONG mask, const char* str)
 
         if ( prefer_dml && mask == DEBUG_OUTPUT_ERROR )
         {
+            line = std::regex_replace(line, std::regex("&"), "&amp;");
+            line = std::regex_replace(line, std::regex("<"), "&lt;");
+            line = std::regex_replace(line, std::regex(">"), "&gt;");
+
             control->ControlledOutput(
                 DEBUG_OUTCTL_AMBIENT_DML,
                 mask,

@@ -151,7 +151,7 @@ class PyObjectRef
 {
 public:
 
-    PyObjectRef() : m_obj(0)
+    PyObjectRef() : m_obj(nullptr)
     {}
 
     PyObjectRef(PyObject* obj)
@@ -168,6 +168,11 @@ public:
     operator PyObject*()
     {
         return m_obj;
+    }
+
+    PyObject** operator&()
+    {
+        return &m_obj;
     }
 
     PyObjectRef& operator= (const PyObjectRef& ref)
