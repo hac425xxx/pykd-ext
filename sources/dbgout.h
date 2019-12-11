@@ -106,11 +106,21 @@ public:
         return false;
     }
 
+    bool isatty() {
+        return false;
+    }
+
+    std::wstring encoding() {
+        return L"ascii";
+    }
+
 public:
 
     BEGIN_PYTHON_METHOD_MAP(DbgIn, "dbgin")
         PYTHON_METHOD0("readline", readline, "readline");
         PYTHON_PROPERTY("closed", closed, "closed");
+        PYTHON_PROPERTY("encoding", encoding, "encoding");
+        PYTHON_METHOD0("isatty", isatty, "isatty");
     END_PYTHON_METHOD_MAP
     
 private:
