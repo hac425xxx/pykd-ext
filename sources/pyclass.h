@@ -214,7 +214,9 @@ static PyObject* getPythonClass() { \
         PyObject*  args = PyTuple_New(4); \
         Py_IncRef(PyProperty_Type()); \
         PyTuple_SetItem(args, 0, methodObj); \
+        Py_IncRef(Py_None()); \
         PyTuple_SetItem(args, 1, Py_None()); \
+        Py_IncRef(Py_None()); \
         PyTuple_SetItem(args, 2, Py_None()); \
         PyTuple_SetItem(args, 3, IsPy3() ? PyUnicode_FromString(doc) : PyString_FromString(doc));\
         PyObject*  propertyObj = PyObject_CallObject(PyProperty_Type(), args); \
