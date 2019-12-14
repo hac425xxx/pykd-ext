@@ -428,8 +428,8 @@ py(
                     FILE*  fs = _Py_fopen(scriptFileName.c_str(), "r");
                     if ( !fs )
                         throw std::invalid_argument("script not found\n");
-
-                    PyObjectRef result = PyRun_File(fs, scriptFileName.c_str(), Py_file_input, globals, globals);
+                    
+                      PyObjectRef result = PyRun_FileExFlags(fs, scriptFileName.c_str(), Py_file_input, globals, globals, 1, NULL);
                 }
             }
             else
@@ -595,9 +595,14 @@ void handleException()
         PyObjectRef  format_exception = PyObject_GetAttrString(traceback_module, "format_exception");
 
         PyObjectRef  args = PyTuple_New(3);
-        PyTuple_SetItem(args, 0, errtype ? static_cast<PyObject*>(errtype) : Py_None());
-        PyTuple_SetItem(args, 1, errvalue ? static_cast<PyObject*>(errvalue) : Py_None());
-        PyTuple_SetItem(args, 2, traceback ? static_cast<PyObject*>(traceback) : Py_None());
+
+        PyObject*  arg0 = errtype ? static_cast<PyObject*>(errtype) : Py_None(); Py_IncRef(arg0);
+        PyObject*  arg1 = errvalue ? static_cast<PyObject*>(errvalue) : Py_None(); Py_IncRef(arg1);
+        PyObject*  arg2 = traceback ? static_cast<PyObject*>(traceback) : Py_None(); Py_IncRef(arg2);
+        
+        PyTuple_SetItem(args, 0, arg0);
+        PyTuple_SetItem(args, 1, arg1);
+        PyTuple_SetItem(args, 2, arg2);
 
         PyObjectRef  lst = PyObject_Call(format_exception, args, NULL);
 
@@ -654,12 +659,7 @@ void getPathList( std::list<std::string>  &pathStringLst)
 
 std::string getScriptFileName(const std::string &scriptName)
 {
-    char*  ext = NULL;
-
-    if (scriptName.length() <= 3 || scriptName.find_last_of(".py") != scriptName.length() - 3 )
-    {
-        ext = ".py";
-    }
+    char*  ext = ".py";
 
     DWORD searchResult = SearchPathA(
         NULL,
@@ -671,7 +671,7 @@ std::string getScriptFileName(const std::string &scriptName)
 
     if ( searchResult == 0 )
     {
-            return "";
+        return "";
     }
 
     std::vector<char>  pathBuffer(searchResult);

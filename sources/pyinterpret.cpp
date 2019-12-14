@@ -84,6 +84,7 @@ public:
     PyObject* ( *PyRun_String)(const char *str, int start, PyObject *globals, PyObject *locals);
     int( *PyRun_SimpleString)(const char*  str);
     PyObject* ( *PyRun_File)(FILE *fp, const char *filename, int start, PyObject *globals, PyObject *locals);
+    PyObject* ( *PyRun_FileExFlags)(FILE *fp, const char *filename, int start, PyObject *globals, PyObject *locals, int closeit, void *flags);
     PyObject* ( *PyDict_New)();
     int( *PyDict_SetItemString)(PyObject *p, const char *key, PyObject *val);
     PyObject*( *PyDict_GetItemString)(PyObject *p, const char* key);
@@ -438,6 +439,7 @@ PyModule::PyModule(int majorVesion, int minorVersion)
     *reinterpret_cast<FARPROC*>(&PyRun_String) = GetProcAddress(m_handlePython, "PyRun_String");
     *reinterpret_cast<FARPROC*>(&PyRun_SimpleString) = GetProcAddress(m_handlePython, "PyRun_SimpleString");
     *reinterpret_cast<FARPROC*>(&PyRun_File) = GetProcAddress(m_handlePython, "PyRun_File");
+    *reinterpret_cast<FARPROC*>(&PyRun_FileExFlags) = GetProcAddress(m_handlePython, "PyRun_FileExFlags");
     *reinterpret_cast<FARPROC*>(&PyDict_New) = GetProcAddress(m_handlePython, "PyDict_New");
     *reinterpret_cast<FARPROC*>(&PyDict_SetItemString) = GetProcAddress(m_handlePython, "PyDict_SetItemString");
     *reinterpret_cast<FARPROC*>(&PyDict_GetItemString) = GetProcAddress(m_handlePython, "PyDict_GetItemString");
@@ -849,6 +851,12 @@ PyObject*  PyRun_File(FILE *fp, const char *filename, int start, PyObject *globa
 {
     return PythonSingleton::get()->currentInterpreter()->m_module->PyRun_File(fp, filename, start, globals, locals);
 }
+
+PyObject* PyRun_FileExFlags(FILE *fp, const char *filename, int start, PyObject *globals, PyObject *locals, int closeit, void *flags)
+{
+    return PythonSingleton::get()->currentInterpreter()->m_module->PyRun_FileExFlags(fp, filename, start, globals, locals, closeit, flags);
+}
+
 
 PyObject*  PyUnicode_FromString(const char*  str)
 {

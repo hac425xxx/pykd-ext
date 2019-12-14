@@ -67,6 +67,7 @@ void PySys_SetArgv_Py3(int argc, wchar_t **argv);
 int PyRun_SimpleString(const char* str);
 PyObject* PyRun_String(const char *str, int start, PyObject *globals, PyObject *locals);
 PyObject* PyRun_File(FILE *fp, const char *filename, int start, PyObject *globals, PyObject *locals);
+PyObject* PyRun_FileExFlags(FILE *fp, const char *filename, int start, PyObject *globals, PyObject *locals, int closeit, void *flags);
 
 typedef void(*PyCapsule_Destructor)(PyObject *);
 PyObject* PyCapsule_New(void *pointer, const char *name, PyCapsule_Destructor destructor);
